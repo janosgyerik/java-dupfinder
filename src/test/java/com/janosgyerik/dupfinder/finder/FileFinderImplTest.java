@@ -4,46 +4,15 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
+import static com.janosgyerik.dupfinder.utils.TestFileUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class FileFinderImplTest {
 
     private static final FileFinder FINDER = new FileFinderImpl();
-
-    private File createTempDir() throws IOException {
-        File dir = Files.createTempDirectory("tmp").toFile();
-        dir.deleteOnExit();
-        return dir;
-    }
-
-    private File createTempDir(File basedir) throws IOException {
-        File dir = Files.createTempDirectory(basedir.toPath(), "tmp").toFile();
-        dir.deleteOnExit();
-        return dir;
-    }
-
-    private File createTempFile(File basedir) throws IOException {
-        return createTempFile(basedir, ".tmp");
-    }
-
-    private File createTempFile(File basedir, String suffix) throws IOException {
-        File file = File.createTempFile("tmp", suffix, basedir);
-        file.deleteOnExit();
-        return file;
-    }
-
-    private List<File> sorted(File... files) {
-        List<File> list = new ArrayList<>(Arrays.asList(files));
-        Collections.sort(list);
-        return list;
-    }
 
     @Test
     public void test_find_nothing_in_empty_dir() throws IOException {
