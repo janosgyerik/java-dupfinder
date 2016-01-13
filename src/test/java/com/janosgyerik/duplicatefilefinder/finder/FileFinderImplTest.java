@@ -18,13 +18,13 @@ public class FileFinderImplTest {
     private static final FileFinder FINDER = new FileFinderImpl();
 
     private File createTempDir() throws IOException {
-        File tempDir = Files.createTempDirectory("tmp").toFile();
-        tempDir.deleteOnExit();
-        return tempDir;
+        File dir = Files.createTempDirectory("tmp").toFile();
+        dir.deleteOnExit();
+        return dir;
     }
 
-    private File createSubDir(File basedir, String name) throws IOException {
-        File dir = Files.createTempDirectory(basedir.toPath(), name).toFile();
+    private File createTempDir(File basedir) throws IOException {
+        File dir = Files.createTempDirectory(basedir.toPath(), "tmp").toFile();
         dir.deleteOnExit();
         return dir;
     }
@@ -72,7 +72,7 @@ public class FileFinderImplTest {
         File tempDir = createTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createSubDir(tempDir, "sub1");
+        File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
@@ -83,7 +83,7 @@ public class FileFinderImplTest {
         File tempDir = createTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createSubDir(tempDir, "sub1");
+        File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
@@ -109,7 +109,7 @@ public class FileFinderImplTest {
         File tempDir = createTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createSubDir(tempDir, "sub1");
+        File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
