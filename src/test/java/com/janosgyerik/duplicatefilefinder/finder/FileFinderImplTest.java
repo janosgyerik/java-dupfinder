@@ -104,4 +104,25 @@ public class FileFinderImplTest {
             return pathname.getName().endsWith(suffix);
         }));
     }
+
+    @Test
+    public void test_find_one_file_until_accessible() throws IOException {
+        File tempDir = createTempDir();
+        File tempFile1 = createTempFile(tempDir);
+
+        File subDir = createSubDir(tempDir, "sub1");
+        File tempFile2 = createTempFile(subDir);
+
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
+
+        if (!subDir.setExecutable(false)) {
+            throw new IOException("could not revoke directory executable permission");
+        }
+        assertEquals(sorted(tempFile1), FINDER.find(tempDir, 1));
+
+        if (!subDir.setExecutable(true)) {
+            throw new IOException("could not restore directory executable permission");
+        }
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
+    }
 }
