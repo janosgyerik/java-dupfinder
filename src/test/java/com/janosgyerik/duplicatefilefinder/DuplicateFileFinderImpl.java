@@ -2,11 +2,13 @@ package com.janosgyerik.duplicatefilefinder;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.List;
 import java.util.Set;
 
-public class DuplicateFileFinderImpl extends SkeletalDuplicateFileFinder {
+public class DuplicateFileFinderImpl implements DuplicateFileFinder {
+
     @Override
-    public Set<Set<File>> findDuplicateFiles(File basedir, FileFilter fileFilter, int depth) {
+    public List<List<File>> findDuplicateFiles(FileFinder fileFinder) {
         return null;
     }
 }
