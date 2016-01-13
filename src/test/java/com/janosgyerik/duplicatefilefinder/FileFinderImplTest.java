@@ -14,6 +14,8 @@ import static org.junit.Assert.assertTrue;
 
 public class FileFinderImplTest {
 
+    private static final FileFinder FINDER = new FileFinderImpl();
+
     private File createTempDir() throws IOException {
         File tempFile = File.createTempFile("tmp", "-dir");
         if (tempFile.delete() && tempFile.mkdir()) {
@@ -48,14 +50,14 @@ public class FileFinderImplTest {
     public void test_find_nothing_in_empty_dir() throws IOException {
         File emptyDir = createTempDir();
         assertTrue(emptyDir.isDirectory());
-        assertEquals(0, new FileFinderImpl().find(emptyDir).size());
+        assertEquals(0, FINDER.find(emptyDir).size());
     }
 
     @Test
     public void test_find_one_file_in_basedir() throws IOException {
         File tempDir = createTempDir();
         File tempFile = createTempFile(tempDir);
-        assertEquals(Collections.singletonList(tempFile), new FileFinderImpl().find(tempDir));
+        assertEquals(Collections.singletonList(tempFile), FINDER.find(tempDir));
     }
 
     @Test
@@ -63,7 +65,7 @@ public class FileFinderImplTest {
         File tempDir = createTempDir();
         File tempFile1 = createTempFile(tempDir);
         File tempFile2 = createTempFile(tempDir);
-        assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
     }
 
     @Test
@@ -74,7 +76,7 @@ public class FileFinderImplTest {
         File subDir = createSubDir(tempDir, "sub1");
         File tempFile2 = createTempFile(subDir);
 
-        assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
     }
 
     @Test
@@ -85,8 +87,8 @@ public class FileFinderImplTest {
         File subDir = createSubDir(tempDir, "sub1");
         File tempFile2 = createTempFile(subDir);
 
-        assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
-        assertEquals(sorted(tempFile1), new FileFinderImpl().find(tempDir, 1));
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
+        assertEquals(sorted(tempFile1), FINDER.find(tempDir, 1));
     }
 
     @Test
@@ -96,9 +98,9 @@ public class FileFinderImplTest {
         final String suffix = ".tmp";
         File tempFile1 = createTempFile(tempDir, suffix);
         File tempFile2 = createTempFile(tempDir, ".exe");
-        assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
+        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir));
 
-        assertEquals(sorted(tempFile1), new FileFinderImpl().find(tempDir, pathname -> {
+        assertEquals(sorted(tempFile1), FINDER.find(tempDir, pathname -> {
             return pathname.getName().endsWith(suffix);
         }));
     }
