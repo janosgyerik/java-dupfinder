@@ -1,11 +1,8 @@
-package com.janosgyerik.duplicatefilefinder;
+package com.janosgyerik.duplicatefilefinder.finder;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOError;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FileFinderImpl extends SkeletalFileFinder {

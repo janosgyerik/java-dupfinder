@@ -1,4 +1,6 @@
-package com.janosgyerik.duplicatefilefinder;
+package com.janosgyerik.duplicatefilefinder.dupfinder;
+
+import com.janosgyerik.duplicatefilefinder.finder.FileFinder;
 
 import java.io.File;
 import java.util.List;
