@@ -31,7 +31,11 @@ public class FileFinderImplTest {
     }
 
     private File createTempFile(File basedir) throws IOException {
-        return File.createTempFile("tmp", ".tmp", basedir);
+        return createTempFile(basedir, ".tmp");
+    }
+
+    private File createTempFile(File basedir, String suffix) throws IOException {
+        return File.createTempFile("tmp", suffix, basedir);
     }
 
     private List<File> sorted(File... files) {
@@ -83,5 +87,19 @@ public class FileFinderImplTest {
 
         assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
         assertEquals(sorted(tempFile1), new FileFinderImpl().find(tempDir, 1));
+    }
+
+    @Test
+    public void test_find_one_file_matching_extension() throws IOException {
+        File tempDir = createTempDir();
+
+        final String suffix = ".tmp";
+        File tempFile1 = createTempFile(tempDir, suffix);
+        File tempFile2 = createTempFile(tempDir, ".exe");
+        assertEquals(sorted(tempFile1, tempFile2), new FileFinderImpl().find(tempDir));
+
+        assertEquals(sorted(tempFile1), new FileFinderImpl().find(tempDir, pathname -> {
+            return pathname.getName().endsWith(suffix);
+        }));
     }
 }
