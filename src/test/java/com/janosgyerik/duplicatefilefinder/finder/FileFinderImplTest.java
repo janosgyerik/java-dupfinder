@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,18 +18,14 @@ public class FileFinderImplTest {
     private static final FileFinder FINDER = new FileFinderImpl();
 
     private File createTempDir() throws IOException {
-        File tempFile = File.createTempFile("tmp", "-dir");
-        if (tempFile.delete() && tempFile.mkdir()) {
-            return tempFile;
-        }
-        throw new IOException("could not create temporary directory");
+        File tempDir = Files.createTempDirectory("tmp").toFile();
+        tempDir.deleteOnExit();
+        return tempDir;
     }
 
     private File createSubDir(File basedir, String name) throws IOException {
-        File dir = new File(basedir, name);
-        if (!dir.mkdir()) {
-            throw new IOException("could not create directory: " + dir);
-        }
+        File dir = Files.createTempDirectory(basedir.toPath(), name).toFile();
+        dir.deleteOnExit();
         return dir;
     }
 
@@ -37,7 +34,9 @@ public class FileFinderImplTest {
     }
 
     private File createTempFile(File basedir, String suffix) throws IOException {
-        return File.createTempFile("tmp", suffix, basedir);
+        File file = File.createTempFile("tmp", suffix, basedir);
+        file.deleteOnExit();
+        return file;
     }
 
     private List<File> sorted(File... files) {
