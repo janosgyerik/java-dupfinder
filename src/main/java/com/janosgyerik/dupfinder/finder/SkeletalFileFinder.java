@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 
-public abstract class SkeletalFileFinder implements FileFinder {
+abstract class SkeletalFileFinder implements FileFinder {
 
     private static final int MAX_DEPTH = Integer.MAX_VALUE;
 
