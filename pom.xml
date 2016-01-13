@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.janosgyerik.duplicate-file-finder</groupId>
-    <artifactId>duplicate-file-finder</artifactId>
+    <groupId>com.janosgyerik.dupfinder</groupId>
+    <artifactId>dupfinder</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
-    <description>duplicate-file-finder</description>
-    <url>https://github.com/janosgyerik/java-duplicate-file-finder</url>
+    <description>Find duplicate files</description>
+    <url>https://github.com/janosgyerik/java-dupfinder</url>
 
     <properties>
         <java.version>1.8</java.version>
