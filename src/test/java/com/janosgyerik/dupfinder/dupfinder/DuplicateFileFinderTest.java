@@ -1,4 +1,4 @@
-package com.janosgyerik.duplicatefilefinder.dupfinder;
+package com.janosgyerik.dupfinder.dupfinder;
 
 import org.junit.Test;
 
