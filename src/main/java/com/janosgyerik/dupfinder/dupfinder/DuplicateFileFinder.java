@@ -2,6 +2,7 @@ package com.janosgyerik.dupfinder.dupfinder;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 public interface DuplicateFileFinder {
 
@@ -11,6 +12,6 @@ public interface DuplicateFileFinder {
      * @param files the list of files to check
      * @return sets of duplicate files
      */
-    List<List<File>> findDuplicates(List<File> files);
+    Set<Set<File>> findDuplicates(List<File> files);
 
 }
