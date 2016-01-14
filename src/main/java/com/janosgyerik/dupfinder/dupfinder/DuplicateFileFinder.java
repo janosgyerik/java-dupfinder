@@ -1,18 +1,16 @@
 package com.janosgyerik.dupfinder.dupfinder;
 
-import com.janosgyerik.dupfinder.finder.FileFinder;
-
 import java.io.File;
 import java.util.List;
 
 public interface DuplicateFileFinder {
 
     /**
-     * Find duplicate files, by searching recursively through a directory tree.
+     * Find duplicate files in given list
      *
-     * @param fileFinder the file finder to provide the list of files to check
+     * @param files the list of files to check
      * @return sets of duplicate files
      */
-    List<List<File>> findDuplicateFiles(FileFinder fileFinder);
+    List<List<File>> findDuplicates(List<File> files);
 
 }
