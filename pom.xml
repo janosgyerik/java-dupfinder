@@ -16,7 +16,7 @@
     </properties>
 
     <build>
-        <finalName>microbench</finalName>
+        <finalName>dupfinder</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
