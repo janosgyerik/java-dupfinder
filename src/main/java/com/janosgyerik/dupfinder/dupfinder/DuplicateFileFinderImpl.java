@@ -17,8 +17,6 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
 
         @Override
         public int compare(File file1, File file2) {
-            int defaultOrder = file1.compareTo(file2);
-
             int compareFileSize = Long.compare(file1.length(), file2.length());
             if (compareFileSize != 0) {
                 return compareFileSize;
@@ -52,12 +50,9 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                         return compareBuffers;
                     }
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return defaultOrder;
             } catch (IOException e) {
                 e.printStackTrace();
-                return defaultOrder;
+                return file1.compareTo(file2);
             }
 
             tracker.add(file1, file2);
