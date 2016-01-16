@@ -90,7 +90,7 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                 pool = pool1;
                 pool.add(file2);
             } else if (pool1 == pool2) {
-                pool = pool1;
+                return;
             } else {
                 pool = pool1;
                 pool.addAll(pool2);
