@@ -44,8 +44,7 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                     assert bytesRead1 == bytesRead2;
 
                     if (bytesRead1 == -1) {
-                        tracker.add(file1, file2);
-                        return 0;
+                        break;
                     }
                     if (!Arrays.equals(buffer1, buffer2)) {
                         return defaultOrder;
@@ -58,6 +57,9 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                 e.printStackTrace();
                 return defaultOrder;
             }
+
+            tracker.add(file1, file2);
+            return 0;
         }
     }
 
