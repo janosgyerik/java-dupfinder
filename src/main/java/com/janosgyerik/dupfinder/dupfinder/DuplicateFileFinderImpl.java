@@ -77,29 +77,24 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
             Set<File> pool1 = pools.get(file1);
             Set<File> pool2 = pools.get(file2);
 
-            final Set<File> pool;
-
             if (pool1 == null && pool2 == null) {
-                pool = new HashSet<>();
-                pool.add(file1);
-                pool.add(file2);
+                pool1 = new HashSet<>();
+                pool1.add(file1);
+                pool1.add(file2);
+                pools.put(file1, pool1);
+                pools.put(file2, pool1);
             } else if (pool1 == null) {
-                pool = pool2;
-                pool.add(file1);
+                pool2.add(file1);
+                pools.put(file1, pool2);
             } else if (pool2 == null) {
-                pool = pool1;
-                pool.add(file2);
-            } else if (pool1 == pool2) {
-                return;
-            } else {
-                pool = pool1;
-                pool.addAll(pool2);
+                pool1.add(file2);
+                pools.put(file2, pool1);
+            } else if (pool1 != pool2) {
+                pool1.addAll(pool2);
                 for (File file : pool2) {
-                    pools.put(file, pool);
+                    pools.put(file, pool1);
                 }
             }
-            pools.put(file1, pool);
-            pools.put(file2, pool);
         }
 
         public Set<Set<File>> getDuplicates() {
