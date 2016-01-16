@@ -45,7 +45,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_all_are_duplicates() throws IOException {
+    public void test_find_2_of_2_duplicates() throws IOException {
         String content = "blah";
 
         File basedir = createTempDir();
@@ -61,7 +61,26 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_some_are_duplicates() throws IOException {
+    public void test_find_5_of_5_duplicates() throws IOException {
+        String content = "blah";
+
+        File basedir = createTempDir();
+        File file1 = createTempFileWithContent(basedir, content);
+        File file2 = createTempFileWithContent(basedir, content);
+        File file3 = createTempFileWithContent(basedir, content);
+        File file4 = createTempFileWithContent(basedir, content);
+        File file5 = createTempFileWithContent(basedir, content);
+
+        List<File> files = FINDER.find(basedir);
+
+        assertEquals(sorted(file1, file2, file3, file4, file5), files);
+
+        Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2, file3, file4, file5));
+        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+    }
+
+    @Test
+    public void test_find_2_of_3_duplicates() throws IOException {
         String content = "blah";
         String differentContent = "balm";
 
@@ -75,6 +94,30 @@ public class DuplicateFileFinderTest {
         assertEquals(sorted(file1, file2, file3), files);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2));
+        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+    }
+
+    @Test
+    public void test_find_2_sets_of_duplicates_among_5() throws IOException {
+        String content = "blah";
+        String anotherContent = "balm";
+        String yetAnotherContent = "bulk";
+
+        File basedir = createTempDir();
+        File file1 = createTempFileWithContent(basedir, content);
+        File file2 = createTempFileWithContent(basedir, content);
+        File file3 = createTempFileWithContent(basedir, anotherContent);
+        File file4 = createTempFileWithContent(basedir, anotherContent);
+        File file5 = createTempFileWithContent(basedir, yetAnotherContent);
+
+        List<File> files = FINDER.find(basedir);
+
+        assertEquals(sorted(file1, file2, file3, file4, file5), files);
+
+        Set<Set<File>> duplicates = new HashSet<>(Arrays.asList(
+                toSet(file1, file2),
+                toSet(file3, file4)
+        ));
         assertEquals(duplicates, DUPFINDER.findDuplicates(files));
     }
 }
