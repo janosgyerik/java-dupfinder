@@ -48,9 +48,7 @@ public class Main {
             if (isAccessibleDirectory(dir)) {
                 List<File> files = finder.find(dir);
                 Set<Set<File>> duplicateFileSets = duplicateFileFinder.findDuplicates(files);
-                for (Set<File> fileSet : duplicateFileSets) {
-                    printFileSet(fileSet);
-                }
+                duplicateFileSets.forEach(Main::printFileSet);
             }
         }
     }
@@ -63,9 +61,7 @@ public class Main {
         List<File> files = new ArrayList<>(fileSet);
         Collections.sort(files);
 
-        for (File file : files) {
-            System.out.println(file);
-        }
+        files.forEach(System.out::println);
         System.out.println();
     }
 }
