@@ -41,10 +41,7 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                     bytesRead1 = stream1.read(buffer1);
                     bytesRead2 = stream2.read(buffer2);
 
-                    int compareBytesRead = Integer.compare(bytesRead1, bytesRead2);
-                    if (compareBytesRead != 0) {
-                        return compareBytesRead;
-                    }
+                    assert bytesRead1 == bytesRead2;
 
                     if (bytesRead1 == -1) {
                         tracker.add(file1, file2);
