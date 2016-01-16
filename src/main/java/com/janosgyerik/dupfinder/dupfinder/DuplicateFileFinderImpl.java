@@ -46,8 +46,10 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                     if (bytesRead1 == -1) {
                         break;
                     }
-                    if (!Arrays.equals(buffer1, buffer2)) {
-                        return defaultOrder;
+
+                    int compareBuffers = compareBuffers(buffer1, buffer2, bytesRead1);
+                    if (compareBuffers != 0) {
+                        return compareBuffers;
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -59,6 +61,16 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
             }
 
             tracker.add(file1, file2);
+            return 0;
+        }
+
+        private int compareBuffers(byte[] buffer1, byte[] buffer2, int num) {
+            for (int i = 0; i < num; ++i) {
+                int compare = Byte.compare(buffer1[i], buffer2[i]);
+                if (compare != 0) {
+                    return compare;
+                }
+            }
             return 0;
         }
     }
