@@ -16,10 +16,13 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
+
+    public static final String PARAM_DIRS = "dirs";
+
     public static void main(String[] args) {
         ArgumentParser parser = ArgumentParsers.newArgumentParser("java -jar dupfinder.jar")
                 .description("Find duplicate files in specified directory trees");
-        parser.addArgument("dirs")
+        parser.addArgument(PARAM_DIRS)
                 .metavar("DIR")
                 .type(String.class)
                 .nargs("+")
@@ -43,7 +46,7 @@ public class Main {
         FileFinder finder = new FileFinderImpl();
         DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
 
-        for (Object arg : res.getList("dirs")) {
+        for (Object arg : res.getList(PARAM_DIRS)) {
             File dir = new File(String.valueOf(arg));
             if (isAccessibleDirectory(dir)) {
                 List<File> files = finder.find(dir);
