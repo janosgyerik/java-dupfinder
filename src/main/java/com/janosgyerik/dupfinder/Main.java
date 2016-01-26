@@ -31,7 +31,7 @@ public class Main {
                 .metavar("N")
                 .type(Integer.class)
                 .help("descend at most N directory levels");
-        parser.addArgument("--extension", "--ext")
+        parser.addArgument("--extension", "--ext", "-x")
                 .type(String.class)
                 .help("include only files matching extension");
         try {
