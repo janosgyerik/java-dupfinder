@@ -10,6 +10,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Main {
                 .type(String.class)
                 .nargs("+")
                 .help("path to a directory");
-        parser.addArgument("--maxdepth")
+        parser.addArgument("--maxdepth", "-d")
                 .metavar("N")
                 .type(Integer.class)
                 .help("descend at most N directory levels");
@@ -42,18 +43,88 @@ public class Main {
         }
     }
 
+    private static FileFinder finder = new FileFinderImpl();
+
+    private interface FilterStrategy {
+        List<File> find(File dir);
+    }
+
+    private static class FilterNothing implements FilterStrategy {
+        @Override
+        public List<File> find(File dir) {
+            return finder.find(dir);
+        }
+    }
+
+    private static class FilterByExtension implements FilterStrategy {
+        private final FileFilter filter;
+
+        private FilterByExtension(String extension) {
+            this.filter = FileFilters.byExtension(extension);
+        }
+
+        @Override
+        public List<File> find(File dir) {
+            return finder.find(dir, filter);
+        }
+    }
+
+    private static class FilterByDepth implements FilterStrategy {
+        private final int depth;
+
+        private FilterByDepth(int depth) {
+            this.depth = depth;
+        }
+
+        @Override
+        public List<File> find(File dir) {
+            return finder.find(dir, depth);
+        }
+    }
+
+    private static class FilterByExtensionAndDepth implements FilterStrategy {
+        private final FileFilter filter;
+        private final int depth;
+
+        private FilterByExtensionAndDepth(String extension, int depth) {
+            this.filter = FileFilters.byExtension(extension);
+            this.depth = depth;
+        }
+
+        @Override
+        public List<File> find(File dir) {
+            return finder.find(dir, filter, depth);
+        }
+    }
+
     private static void main(Namespace res) {
-        FileFinder finder = new FileFinderImpl();
         DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
+        FilterStrategy strategy = getFilterStrategy(res);
 
         for (Object arg : res.getList(PARAM_DIRS)) {
             File dir = new File(String.valueOf(arg));
             if (isAccessibleDirectory(dir)) {
-                List<File> files = finder.find(dir);
+                List<File> files = strategy.find(dir);
                 Set<Set<File>> duplicateFileSets = duplicateFileFinder.findDuplicates(files);
                 duplicateFileSets.forEach(Main::printFileSet);
             }
         }
+    }
+
+    private static FilterStrategy getFilterStrategy(Namespace res) {
+        String extension = res.getString("extension");
+        Integer depth = res.getInt("maxdepth");
+
+        if (extension != null && depth != null) {
+            return new FilterByExtensionAndDepth(extension, depth);
+        }
+        if (extension != null) {
+            return new FilterByExtension(extension);
+        }
+        if (depth != null) {
+            return new FilterByDepth(depth);
+        }
+        return new FilterNothing();
     }
 
     private static boolean isAccessibleDirectory(File dir) {
