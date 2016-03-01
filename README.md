@@ -27,5 +27,4 @@ To find duplicate files in multiple directory trees,
 only considering filenames with extension `.avi`,
 descending to at most 2 sub-directory levels:
 
-    java -jar $JAR --ext avi --maxdepth 2 path/to/first path/to/second
-
+    java -jar $JAR --ext avi --maxdepth 2 path/to/dir path/to/other/dir
