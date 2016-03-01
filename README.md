@@ -9,6 +9,10 @@ Create the JAR including dependencies using Maven:
 
     mvn clean compile assembly:single
 
+Or simply run:
+
+    ./build.sh
+
 This will create `target/dupfinder-jar-with-dependencies.jar`,
 an executable jar.
 
@@ -28,3 +32,7 @@ only considering filenames with extension `.avi`,
 descending to at most 2 sub-directory levels:
 
     java -jar $JAR --ext avi --maxdepth 2 path/to/dir path/to/other/dir
+
+Or using the helper script:
+
+    ./run.sh --ext avi --maxdepth 2 path/to/dir path/to/other/dir
