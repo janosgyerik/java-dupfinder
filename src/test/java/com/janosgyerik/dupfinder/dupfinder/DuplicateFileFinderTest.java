@@ -1,7 +1,5 @@
 package com.janosgyerik.dupfinder.dupfinder;
 
-import com.janosgyerik.dupfinder.finder.FileFinder;
-import com.janosgyerik.dupfinder.finder.FileFinderImpl;
 import org.junit.Test;
 
 import java.io.File;
@@ -14,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DuplicateFileFinderTest {
 
-    private static final FileFinder FINDER = new FileFinderImpl();
     private static final DuplicateFileFinder DUPFINDER = new DuplicateFileFinderImpl();
 
     private File createTempFileWithContent(File basedir, String content) throws IOException {
@@ -37,7 +34,7 @@ public class DuplicateFileFinderTest {
         File file1 = createTempFileWithContent(basedir, "foo");
         File file2 = createTempFileWithContent(basedir, "bar");
 
-        List<File> files = FINDER.find(basedir);
+        List<File> files = Arrays.asList(basedir.listFiles());
 
         assertEquals(sorted(file1, file2), files);
 
@@ -52,7 +49,7 @@ public class DuplicateFileFinderTest {
         File file1 = createTempFileWithContent(basedir, content);
         File file2 = createTempFileWithContent(basedir, content);
 
-        List<File> files = FINDER.find(basedir);
+        List<File> files = Arrays.asList(basedir.listFiles());
 
         assertEquals(sorted(file1, file2), files);
 
@@ -71,7 +68,7 @@ public class DuplicateFileFinderTest {
         File file4 = createTempFileWithContent(basedir, content);
         File file5 = createTempFileWithContent(basedir, content);
 
-        List<File> files = FINDER.find(basedir);
+        List<File> files = Arrays.asList(basedir.listFiles());
 
         assertEquals(sorted(file1, file2, file3, file4, file5), files);
 
@@ -89,7 +86,7 @@ public class DuplicateFileFinderTest {
         File file2 = createTempFileWithContent(basedir, content);
         File file3 = createTempFileWithContent(basedir, differentContent);
 
-        List<File> files = FINDER.find(basedir);
+        List<File> files = Arrays.asList(basedir.listFiles());
 
         assertEquals(sorted(file1, file2, file3), files);
 
@@ -110,7 +107,7 @@ public class DuplicateFileFinderTest {
         File file4 = createTempFileWithContent(basedir, anotherContent);
         File file5 = createTempFileWithContent(basedir, yetAnotherContent);
 
-        List<File> files = FINDER.find(basedir);
+        List<File> files = Arrays.asList(basedir.listFiles());
 
         assertEquals(sorted(file1, file2, file3, file4, file5), files);
 
