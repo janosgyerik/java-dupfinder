@@ -17,9 +17,9 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
 
         @Override
         public int compare(File file1, File file2) {
-            int compareFileSize = Long.compare(file1.length(), file2.length());
-            if (compareFileSize != 0) {
-                return compareFileSize;
+            int cmpFileSize = Long.compare(file1.length(), file2.length());
+            if (cmpFileSize != 0) {
+                return cmpFileSize;
             }
 
             if (file1.length() == 0) {
@@ -45,9 +45,9 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                         break;
                     }
 
-                    int compareBuffers = compareBuffers(buffer1, buffer2, bytesRead1);
-                    if (compareBuffers != 0) {
-                        return compareBuffers;
+                    int cmpBuffers = compareBuffers(buffer1, buffer2, bytesRead1);
+                    if (cmpBuffers != 0) {
+                        return cmpBuffers;
                     }
                 }
             } catch (IOException e) {
@@ -61,9 +61,9 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
 
         private int compareBuffers(byte[] buffer1, byte[] buffer2, int num) {
             for (int i = 0; i < num; ++i) {
-                int compare = Byte.compare(buffer1[i], buffer2[i]);
-                if (compare != 0) {
-                    return compare;
+                int cmp = Byte.compare(buffer1[i], buffer2[i]);
+                if (cmp != 0) {
+                    return cmp;
                 }
             }
             return 0;
