@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public class DuplicateFileFinderTest {
 
-    private final DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
+    private final DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinder();
 
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();

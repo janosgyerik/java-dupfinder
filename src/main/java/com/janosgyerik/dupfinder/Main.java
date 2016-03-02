@@ -1,7 +1,6 @@
 package com.janosgyerik.dupfinder;
 
 import com.janosgyerik.dupfinder.dupfinder.DuplicateFileFinder;
-import com.janosgyerik.dupfinder.dupfinder.DuplicateFileFinderImpl;
 import com.janosgyerik.dupfinder.finder.FileFinder;
 import com.janosgyerik.dupfinder.finder.FileFinderImpl;
 import net.sourceforge.argparse4j.ArgumentParsers;
@@ -98,7 +97,7 @@ public class Main {
     }
 
     private static void main(Namespace res) {
-        DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
+        DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinder();
         FilterStrategy strategy = getFilterStrategy(res);
 
         for (Object arg : res.getList(PARAM_DIRS)) {
