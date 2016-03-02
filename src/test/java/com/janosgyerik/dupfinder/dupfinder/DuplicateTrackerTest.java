@@ -21,8 +21,10 @@ public class DuplicateTrackerTest {
     public void should_create_common_pool_for_2_items() {
         DuplicateTracker<Item> tracker = newTracker();
         tracker.add(new Item(), new Item());
-        assertEquals(1, tracker.getDuplicates().size());
-        assertEquals(2, tracker.getDuplicates().iterator().next().size());
+
+        Set<Set<Item>> duplicates = tracker.getDuplicates();
+        assertEquals(1, duplicates.size());
+        assertEquals(2, duplicates.iterator().next().size());
     }
 
     @Test
@@ -31,8 +33,10 @@ public class DuplicateTrackerTest {
         Item item = new Item();
         tracker.add(item, new Item());
         tracker.add(item, new Item());
-        assertEquals(1, tracker.getDuplicates().size());
-        assertEquals(3, tracker.getDuplicates().iterator().next().size());
+
+        Set<Set<Item>> duplicates = tracker.getDuplicates();
+        assertEquals(1, duplicates.size());
+        assertEquals(3, duplicates.iterator().next().size());
     }
 
     @Test
@@ -41,8 +45,10 @@ public class DuplicateTrackerTest {
         Item item = new Item();
         tracker.add(item, new Item());
         tracker.add(new Item(), item);
-        assertEquals(1, tracker.getDuplicates().size());
-        assertEquals(3, tracker.getDuplicates().iterator().next().size());
+
+        Set<Set<Item>> duplicates = tracker.getDuplicates();
+        assertEquals(1, duplicates.size());
+        assertEquals(3, duplicates.iterator().next().size());
     }
 
     @Test
@@ -50,9 +56,11 @@ public class DuplicateTrackerTest {
         DuplicateTracker<Item> tracker = newTracker();
         tracker.add(new Item(), new Item());
         tracker.add(new Item(), new Item());
-        assertEquals(2, tracker.getDuplicates().size());
 
-        Iterator<Set<Item>> iterator = tracker.getDuplicates().iterator();
+        Set<Set<Item>> duplicates = tracker.getDuplicates();
+        assertEquals(2, duplicates.size());
+
+        Iterator<Set<Item>> iterator = duplicates.iterator();
         assertEquals(2, iterator.next().size());
         assertEquals(2, iterator.next().size());
     }
@@ -68,9 +76,8 @@ public class DuplicateTrackerTest {
         tracker.add(ofPool2, new Item());
         tracker.add(ofPool1, ofPool2);
 
-        assertEquals(1, tracker.getDuplicates().size());
-
-        Iterator<Set<Item>> iterator = tracker.getDuplicates().iterator();
-        assertEquals(4, iterator.next().size());
+        Set<Set<Item>> duplicates = tracker.getDuplicates();
+        assertEquals(1, duplicates.size());
+        assertEquals(4, duplicates.iterator().next().size());
     }
 }
