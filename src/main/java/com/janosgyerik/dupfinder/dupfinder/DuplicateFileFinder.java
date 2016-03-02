@@ -13,7 +13,7 @@ public class DuplicateFileFinder {
      */
     public Set<Set<File>> findDuplicates(List<File> files) {
         DuplicateTracker<File> tracker = new DuplicateTracker<>();
-        FileContentComparator comparator = new FileContentComparator();
+        Comparator<File> comparator = new FileContentComparator();
 
         Collections.sort(files, (file1, file2) -> {
             int cmp = comparator.compare(file1, file2);
