@@ -1,6 +1,6 @@
 # java-dupfinder
 
-Find duplicate files in specified directory trees
+Find duplicate files in specified directory trees.
 
 Building
 --------
