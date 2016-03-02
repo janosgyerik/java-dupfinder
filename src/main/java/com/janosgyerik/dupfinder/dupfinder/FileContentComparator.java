@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Comparator;
 
+/**
+ * A comparator to compare two files by content.
+ * In case of I/O errors, fall back to default comparator of File.
+ */
 public class FileContentComparator implements Comparator<File> {
 
     private static final int DEFAULT_BUFSIZE = 1024 * 1024;
@@ -54,7 +58,7 @@ public class FileContentComparator implements Comparator<File> {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // ignore I/O errors, fall back to default comparison logic
             return file1.compareTo(file2);
         }
 

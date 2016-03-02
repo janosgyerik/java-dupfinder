@@ -7,7 +7,7 @@ import java.util.Set;
 public interface DuplicateFileFinder {
 
     /**
-     * Find duplicate files in given list
+     * Find duplicates in given list of files, ignoring I/O errors
      *
      * @param files the list of files to check
      * @return sets of duplicate files
