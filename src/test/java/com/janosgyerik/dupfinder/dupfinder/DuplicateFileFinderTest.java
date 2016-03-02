@@ -33,7 +33,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_no_duplicates() throws IOException {
+    public void should_find_no_duplicates() throws IOException {
         File file1 = createTempFileWithContent("foo");
         File file2 = createTempFileWithContent("bar");
 
@@ -43,7 +43,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_2_of_2_duplicates() throws IOException {
+    public void should_find_2_of_2_duplicates() throws IOException {
         String content = "blah";
 
         File file1 = createTempFileWithContent(content);
@@ -56,7 +56,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_5_of_5_duplicates() throws IOException {
+    public void should_find_5_of_5_duplicates() throws IOException {
         String content = "blah";
 
         File file1 = createTempFileWithContent(content);
@@ -72,7 +72,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_2_of_3_duplicates() throws IOException {
+    public void should_find_2_of_3_duplicates() throws IOException {
         String content = "blah";
         String differentContent = "balm";
 
@@ -87,7 +87,7 @@ public class DuplicateFileFinderTest {
     }
 
     @Test
-    public void test_find_2_sets_of_duplicates_among_5() throws IOException {
+    public void should_find_2_sets_of_duplicates_among_5() throws IOException {
         String content = "blah";
         String anotherContent = "balm";
         String yetAnotherContent = "bulk";
