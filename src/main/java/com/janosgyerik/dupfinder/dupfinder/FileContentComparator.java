@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class FileContentComparator implements Comparator<File> {
 
-    private static final int DEFAULT_BUFSIZE = 4096;
+    private static final int DEFAULT_BUFSIZE = 1024 * 1024;
     private final int bufSize;
 
     public FileContentComparator() {
