@@ -1,22 +1,25 @@
 package com.janosgyerik.dupfinder.dupfinder;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static com.janosgyerik.dupfinder.utils.TestFileUtils.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class DuplicateFileFinderTest {
 
     private final DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
 
-    private File createTempFileWithContent(File basedir, String content) throws IOException {
-        File file = createTempFile(basedir);
+    @Rule
+    public TemporaryFolder tmpDir = new TemporaryFolder();
+
+    private File createTempFileWithContent(String content) throws IOException {
+        File file = tmpDir.newFile();
         FileWriter writer = new FileWriter(file);
         writer.append(content);
         writer.close();
@@ -29,21 +32,12 @@ public class DuplicateFileFinderTest {
         return set;
     }
 
-    private List<File> listFiles(File basedir) {
-        File[] files = basedir.listFiles();
-        assertNotNull(files);
-        return Arrays.asList(files);
-    }
-
     @Test
     public void test_find_no_duplicates() throws IOException {
-        File basedir = createTempDir();
-        File file1 = createTempFileWithContent(basedir, "foo");
-        File file2 = createTempFileWithContent(basedir, "bar");
+        File file1 = createTempFileWithContent("foo");
+        File file2 = createTempFileWithContent("bar");
 
-        List<File> files = listFiles(basedir);
-
-        assertEquals(sorted(file1, file2), files);
+        List<File> files = Arrays.asList(file1, file2);
 
         assertEquals(0, duplicateFileFinder.findDuplicates(files).size());
     }
@@ -52,13 +46,10 @@ public class DuplicateFileFinderTest {
     public void test_find_2_of_2_duplicates() throws IOException {
         String content = "blah";
 
-        File basedir = createTempDir();
-        File file1 = createTempFileWithContent(basedir, content);
-        File file2 = createTempFileWithContent(basedir, content);
+        File file1 = createTempFileWithContent(content);
+        File file2 = createTempFileWithContent(content);
 
-        List<File> files = listFiles(basedir);
-
-        assertEquals(sorted(file1, file2), files);
+        List<File> files = Arrays.asList(file1, file2);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2));
         assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
@@ -68,16 +59,13 @@ public class DuplicateFileFinderTest {
     public void test_find_5_of_5_duplicates() throws IOException {
         String content = "blah";
 
-        File basedir = createTempDir();
-        File file1 = createTempFileWithContent(basedir, content);
-        File file2 = createTempFileWithContent(basedir, content);
-        File file3 = createTempFileWithContent(basedir, content);
-        File file4 = createTempFileWithContent(basedir, content);
-        File file5 = createTempFileWithContent(basedir, content);
+        File file1 = createTempFileWithContent(content);
+        File file2 = createTempFileWithContent(content);
+        File file3 = createTempFileWithContent(content);
+        File file4 = createTempFileWithContent(content);
+        File file5 = createTempFileWithContent(content);
 
-        List<File> files = listFiles(basedir);
-
-        assertEquals(sorted(file1, file2, file3, file4, file5), files);
+        List<File> files = Arrays.asList(file1, file2, file3, file4, file5);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2, file3, file4, file5));
         assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
@@ -88,14 +76,11 @@ public class DuplicateFileFinderTest {
         String content = "blah";
         String differentContent = "balm";
 
-        File basedir = createTempDir();
-        File file1 = createTempFileWithContent(basedir, content);
-        File file2 = createTempFileWithContent(basedir, content);
-        File file3 = createTempFileWithContent(basedir, differentContent);
+        File file1 = createTempFileWithContent(content);
+        File file2 = createTempFileWithContent(content);
+        File file3 = createTempFileWithContent(differentContent);
 
-        List<File> files = listFiles(basedir);
-
-        assertEquals(sorted(file1, file2, file3), files);
+        List<File> files = Arrays.asList(file1, file2, file3);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2));
         assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
@@ -107,16 +92,13 @@ public class DuplicateFileFinderTest {
         String anotherContent = "balm";
         String yetAnotherContent = "bulk";
 
-        File basedir = createTempDir();
-        File file1 = createTempFileWithContent(basedir, content);
-        File file2 = createTempFileWithContent(basedir, content);
-        File file3 = createTempFileWithContent(basedir, anotherContent);
-        File file4 = createTempFileWithContent(basedir, anotherContent);
-        File file5 = createTempFileWithContent(basedir, yetAnotherContent);
+        File file1 = createTempFileWithContent(content);
+        File file2 = createTempFileWithContent(content);
+        File file3 = createTempFileWithContent(anotherContent);
+        File file4 = createTempFileWithContent(anotherContent);
+        File file5 = createTempFileWithContent(yetAnotherContent);
 
-        List<File> files = listFiles(basedir);
-
-        assertEquals(sorted(file1, file2, file3, file4, file5), files);
+        List<File> files = Arrays.asList(file1, file2, file3, file4, file5);
 
         Set<Set<File>> duplicates = new HashSet<>(Arrays.asList(
                 toSet(file1, file2),
