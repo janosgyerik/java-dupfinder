@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class DuplicateTracker<T> {
 
-    Map<T, Set<T>> pools = new HashMap<>();
+    private final Map<T, Set<T>> pools = new HashMap<>();
 
     public void add(T item1, T item2) {
         Set<T> pool1 = pools.get(item1);
