@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class DuplicateFileFinderTest {
 
-    private static final DuplicateFileFinder DUPFINDER = new DuplicateFileFinderImpl();
+    private final DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinderImpl();
 
     private File createTempFileWithContent(File basedir, String content) throws IOException {
         File file = createTempFile(basedir);
@@ -45,7 +45,7 @@ public class DuplicateFileFinderTest {
 
         assertEquals(sorted(file1, file2), files);
 
-        assertEquals(0, DUPFINDER.findDuplicates(files).size());
+        assertEquals(0, duplicateFileFinder.findDuplicates(files).size());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class DuplicateFileFinderTest {
         assertEquals(sorted(file1, file2), files);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2));
-        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+        assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class DuplicateFileFinderTest {
         assertEquals(sorted(file1, file2, file3, file4, file5), files);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2, file3, file4, file5));
-        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+        assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class DuplicateFileFinderTest {
         assertEquals(sorted(file1, file2, file3), files);
 
         Set<Set<File>> duplicates = Collections.singleton(toSet(file1, file2));
-        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+        assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
     }
 
     @Test
@@ -122,6 +122,6 @@ public class DuplicateFileFinderTest {
                 toSet(file1, file2),
                 toSet(file3, file4)
         ));
-        assertEquals(duplicates, DUPFINDER.findDuplicates(files));
+        assertEquals(duplicates, duplicateFileFinder.findDuplicates(files));
     }
 }
