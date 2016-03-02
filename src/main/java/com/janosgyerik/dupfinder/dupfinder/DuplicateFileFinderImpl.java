@@ -29,6 +29,7 @@ public class DuplicateFileFinderImpl implements DuplicateFileFinder {
                 for (File file : pool2) {
                     pools.put(file, pool1);
                 }
+                pool2.clear();
             }
         }
 
