@@ -65,8 +65,8 @@ public class FileContentComparator implements Comparator<File> {
         return 0;
     }
 
-    private int compareBuffers(byte[] buffer1, byte[] buffer2, int num) {
-        for (int i = 0; i < num; ++i) {
+    private int compareBuffers(byte[] buffer1, byte[] buffer2, int size) {
+        for (int i = 0; i < size; ++i) {
             int cmp = Byte.compare(buffer1[i], buffer2[i]);
             if (cmp != 0) {
                 return cmp;
