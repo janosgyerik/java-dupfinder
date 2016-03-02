@@ -8,7 +8,16 @@ import java.util.Comparator;
 
 public class FileContentComparator implements Comparator<File> {
 
-    private static final int BUFSIZE = 4096;
+    private static final int DEFAULT_BUFSIZE = 4096;
+    private final int bufSize;
+
+    public FileContentComparator() {
+        bufSize = DEFAULT_BUFSIZE;
+    }
+
+    public FileContentComparator(int bufSize) {
+        this.bufSize = bufSize;
+    }
 
     @Override
     public int compare(File file1, File file2) {
@@ -21,8 +30,8 @@ public class FileContentComparator implements Comparator<File> {
             return 0;
         }
 
-        byte[] buffer1 = new byte[BUFSIZE];
-        byte[] buffer2 = new byte[BUFSIZE];
+        byte[] buffer1 = new byte[bufSize];
+        byte[] buffer2 = new byte[bufSize];
 
         try (BufferedInputStream stream1 = new BufferedInputStream(new FileInputStream(file1));
              BufferedInputStream stream2 = new BufferedInputStream(new FileInputStream(file2))) {
