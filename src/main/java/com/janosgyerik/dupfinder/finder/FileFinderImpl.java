@@ -1,20 +1,16 @@
 package com.janosgyerik.dupfinder.finder;
 
-import com.janosgyerik.dupfinder.FileFilters;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.janosgyerik.dupfinder.FileFilters.byMaxDepth;
+public class FileFinderImpl implements FileFinder {
 
-public class FileFinderImpl extends SkeletalFileFinder {
     @Override
-    public List<File> find(File basedir, FileFilter fileFilter, int depth) {
+    public List<File> find(File basedir, FileFilter fileFilter) {
         List<File> files = new ArrayList<>();
-        FileFilter filter = FileFilters.composite(fileFilter, byMaxDepth(basedir, depth));
-        find(basedir, filter, files);
+        find(basedir, fileFilter, files);
         return files;
     }
 
