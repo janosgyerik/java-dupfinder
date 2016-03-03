@@ -16,4 +16,15 @@ public class FileFilters {
         String prefix = basedir.toString();
         return pathname -> pathname.toString().replace(prefix, "").split("/").length - 1 <= maxDepth;
     }
+
+    public static FileFilter composite(FileFilter... fileFilters) {
+        return pathname -> {
+            for (FileFilter fileFilter : fileFilters) {
+                if (!fileFilter.accept(pathname)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    }
 }
