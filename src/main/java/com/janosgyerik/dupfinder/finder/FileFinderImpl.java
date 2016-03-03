@@ -5,6 +5,8 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.janosgyerik.dupfinder.FileFilters.byMaxDepth;
+
 public class FileFinderImpl extends SkeletalFileFinder {
     private static class CompositeFileFilter implements FileFilter {
         List<FileFilter> fileFilters = new ArrayList<>();
@@ -24,27 +26,12 @@ public class FileFinderImpl extends SkeletalFileFinder {
         }
     }
 
-    private static class MaxDepthFileFilter implements FileFilter {
-        private final String prefix;
-        private final int maxDepth;
-
-        public MaxDepthFileFilter(File basedir, int maxDepth) {
-            this.prefix = basedir.toString();
-            this.maxDepth = maxDepth;
-        }
-
-        @Override
-        public boolean accept(File pathname) {
-            return pathname.toString().replace(prefix, "").split("/").length - 1 <= maxDepth;
-        }
-    }
-
     @Override
     public List<File> find(File basedir, FileFilter fileFilter, int depth) {
         List<File> files = new ArrayList<>();
         CompositeFileFilter compositeFileFilter = new CompositeFileFilter();
         compositeFileFilter.add(fileFilter);
-        compositeFileFilter.add(new MaxDepthFileFilter(basedir, depth));
+        compositeFileFilter.add(byMaxDepth(basedir, depth));
         find(basedir, compositeFileFilter, files);
         return files;
     }
