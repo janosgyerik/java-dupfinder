@@ -13,11 +13,14 @@ public interface FileFinder {
      * @param fileFilter A filter to decide which files to include
      * @return list of matching files found
      */
-    List<File> find(File basedir, FileFilter fileFilter, int depth);
-
     List<File> find(File basedir, FileFilter fileFilter);
 
+    @Deprecated
+    List<File> find(File basedir, FileFilter fileFilter, int depth);
+
+    @Deprecated
     List<File> find(File basedir, int depth);
 
+    @Deprecated
     List<File> find(File basedir);
 }
