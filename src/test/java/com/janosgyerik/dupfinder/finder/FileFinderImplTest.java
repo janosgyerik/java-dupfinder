@@ -15,20 +15,20 @@ import static org.junit.Assert.assertTrue;
 
 public class FileFinderImplTest {
 
-    private static final FileFinder FINDER = new FileFinderImpl();
+    private final FileFinder fileFinder = new FileFinderImpl();
 
     @Test
     public void test_find_nothing_in_empty_dir() throws IOException {
         File emptyDir = createTempDir();
         assertTrue(emptyDir.isDirectory());
-        assertEquals(0, FINDER.find(emptyDir, any()).size());
+        assertEquals(0, fileFinder.find(emptyDir, any()).size());
     }
 
     @Test
     public void test_find_one_file_in_basedir() throws IOException {
         File tempDir = createTempDir();
         File tempFile = createTempFile(tempDir);
-        assertEquals(Collections.singletonList(tempFile), FINDER.find(tempDir, any()));
+        assertEquals(Collections.singletonList(tempFile), fileFinder.find(tempDir, any()));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class FileFinderImplTest {
         File tempDir = createTempDir();
         File tempFile1 = createTempFile(tempDir);
         File tempFile2 = createTempFile(tempDir);
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class FileFinderImplTest {
         File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
     }
 
     @Test
@@ -58,8 +58,8 @@ public class FileFinderImplTest {
         File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
-        assertEquals(sorted(tempFile1), FINDER.find(tempDir, byMaxDepth(tempDir, 1)));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
+        assertEquals(sorted(tempFile1), fileFinder.find(tempDir, byMaxDepth(tempDir, 1)));
     }
 
     @Test
@@ -69,9 +69,9 @@ public class FileFinderImplTest {
         final String suffix = ".tmp";
         File tempFile1 = createTempFile(tempDir, suffix);
         File tempFile2 = createTempFile(tempDir, ".exe");
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
 
-        assertEquals(sorted(tempFile1), FINDER.find(tempDir, byExtension(suffix)));
+        assertEquals(sorted(tempFile1), fileFinder.find(tempDir, byExtension(suffix)));
     }
 
     @Test
@@ -82,16 +82,16 @@ public class FileFinderImplTest {
         File subDir = createTempDir(tempDir);
         File tempFile2 = createTempFile(subDir);
 
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
 
         if (!subDir.setExecutable(false)) {
             throw new IOException("could not revoke directory executable permission");
         }
-        assertEquals(sorted(tempFile1), FINDER.find(tempDir, byMaxDepth(tempDir, 1)));
+        assertEquals(sorted(tempFile1), fileFinder.find(tempDir, byMaxDepth(tempDir, 1)));
 
         if (!subDir.setExecutable(true)) {
             throw new IOException("could not restore directory executable permission");
         }
-        assertEquals(sorted(tempFile1, tempFile2), FINDER.find(tempDir, any()));
+        assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
     }
 }
