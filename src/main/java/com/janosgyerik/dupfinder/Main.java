@@ -15,6 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.janosgyerik.dupfinder.FileFilters.byExtension;
+import static com.janosgyerik.dupfinder.FileFilters.byMaxDepth;
+import static com.janosgyerik.dupfinder.FileFilters.composite;
+
 public class Main {
 
     public static final String PARAM_DIRS = "dirs";
@@ -42,88 +46,33 @@ public class Main {
         }
     }
 
-    private static FileFinder finder = new FileFinderImpl();
-
-    private interface FilterStrategy {
-        List<File> find(File dir);
-    }
-
-    private static class FilterNothing implements FilterStrategy {
-        @Override
-        public List<File> find(File dir) {
-            return finder.find(dir);
-        }
-    }
-
-    private static class FilterByExtension implements FilterStrategy {
-        private final FileFilter filter;
-
-        private FilterByExtension(String extension) {
-            this.filter = FileFilters.byExtension(extension);
-        }
-
-        @Override
-        public List<File> find(File dir) {
-            return finder.find(dir, filter);
-        }
-    }
-
-    private static class FilterByDepth implements FilterStrategy {
-        private final int depth;
-
-        private FilterByDepth(int depth) {
-            this.depth = depth;
-        }
-
-        @Override
-        public List<File> find(File dir) {
-            return finder.find(dir, depth);
-        }
-    }
-
-    private static class FilterByExtensionAndDepth implements FilterStrategy {
-        private final FileFilter filter;
-        private final int depth;
-
-        private FilterByExtensionAndDepth(String extension, int depth) {
-            this.filter = FileFilters.byExtension(extension);
-            this.depth = depth;
-        }
-
-        @Override
-        public List<File> find(File dir) {
-            return finder.find(dir, filter, depth);
-        }
-    }
-
     private static void main(Namespace res) {
         DuplicateFileFinder duplicateFileFinder = new DuplicateFileFinder();
-        FilterStrategy strategy = getFilterStrategy(res);
+        FileFinder finder = new FileFinderImpl();
 
         for (Object arg : res.getList(PARAM_DIRS)) {
-            File dir = new File(String.valueOf(arg));
-            if (isAccessibleDirectory(dir)) {
-                List<File> files = strategy.find(dir);
+            File basedir = new File(String.valueOf(arg));
+            if (isAccessibleDirectory(basedir)) {
+                List<File> files = finder.find(basedir, createFileFilter(res, basedir));
                 Set<Set<File>> duplicateFileSets = duplicateFileFinder.findDuplicates(files);
                 duplicateFileSets.forEach(Main::printFileSet);
             }
         }
     }
 
-    private static FilterStrategy getFilterStrategy(Namespace res) {
-        String extension = res.getString("extension");
-        Integer depth = res.getInt("maxdepth");
+    private static FileFilter createFileFilter(Namespace res, File basedir) {
+        List<FileFilter> fileFilters = new ArrayList<>();
 
-        if (extension != null && depth != null) {
-            return new FilterByExtensionAndDepth(extension, depth);
-        }
+        String extension = res.getString("extension");
         if (extension != null) {
-            return new FilterByExtension(extension);
+            fileFilters.add(byExtension(extension));
         }
+
+        Integer depth = res.getInt("maxdepth");
         if (depth != null) {
-            return new FilterByDepth(depth);
+            fileFilters.add(byMaxDepth(basedir, depth));
         }
-        return new FilterNothing();
+        return composite(fileFilters.toArray(new FileFilter[fileFilters.size()]));
     }
 
     private static boolean isAccessibleDirectory(File dir) {
