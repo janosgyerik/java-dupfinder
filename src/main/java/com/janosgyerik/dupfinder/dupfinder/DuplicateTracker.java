@@ -41,8 +41,6 @@ public class DuplicateTracker<T> {
     }
 
     public Set<Set<T>> getDuplicates() {
-        Set<Set<T>> duplicates = new HashSet<>();
-        duplicates.addAll(pools.values());
-        return duplicates;
+        return new HashSet<>(pools.values());
     }
 }
