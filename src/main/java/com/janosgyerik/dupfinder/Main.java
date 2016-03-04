@@ -15,9 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static com.janosgyerik.dupfinder.FileFilters.byExtension;
-import static com.janosgyerik.dupfinder.FileFilters.byMaxDepth;
-import static com.janosgyerik.dupfinder.FileFilters.composite;
+import static com.janosgyerik.dupfinder.FileFilters.*;
 
 public class Main {
 
@@ -62,6 +60,8 @@ public class Main {
 
     private static FileFilter createFileFilter(Namespace res, File basedir) {
         List<FileFilter> fileFilters = new ArrayList<>();
+
+        fileFilters.add(nonEmpty());
 
         String extension = res.getString("extension");
         if (extension != null) {

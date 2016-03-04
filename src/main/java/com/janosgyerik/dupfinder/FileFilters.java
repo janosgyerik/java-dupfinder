@@ -8,6 +8,10 @@ public class FileFilters {
         return pathname -> true;
     }
 
+    public static FileFilter nonEmpty() {
+        return pathname -> pathname.length() > 0;
+    }
+
     public static FileFilter byExtension(String extension) {
         return pathname -> pathname.isDirectory() || pathname.getName().endsWith(extension);
     }
