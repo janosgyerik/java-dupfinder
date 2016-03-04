@@ -14,18 +14,6 @@ public final class TestFileUtils {
         throw new AssertionError("utility class, forbidden constructor");
     }
 
-    public static File createTempDir() throws IOException {
-        File dir = Files.createTempDirectory("tmp").toFile();
-        dir.deleteOnExit();
-        return dir;
-    }
-
-    public static File createTempDir(File basedir) throws IOException {
-        File dir = Files.createTempDirectory(basedir.toPath(), "tmp").toFile();
-        dir.deleteOnExit();
-        return dir;
-    }
-
     public static File createTempFile(File basedir) throws IOException {
         return createTempFile(basedir, ".tmp");
     }

@@ -1,6 +1,8 @@
 package com.janosgyerik.dupfinder.finder;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,23 +19,34 @@ public class FileFinderImplTest {
 
     private final FileFinder fileFinder = new FileFinderImpl();
 
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    private File getTempDir() throws IOException {
+        return temporaryFolder.getRoot();
+    }
+
+    private File createTempSubDir() throws IOException {
+        return temporaryFolder.newFolder();
+    }
+
     @Test
     public void test_find_nothing_in_empty_dir() throws IOException {
-        File emptyDir = createTempDir();
+        File emptyDir = getTempDir();
         assertTrue(emptyDir.isDirectory());
         assertEquals(0, fileFinder.find(emptyDir, any()).size());
     }
 
     @Test
     public void test_find_one_file_in_basedir() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
         File tempFile = createTempFile(tempDir);
         assertEquals(Collections.singletonList(tempFile), fileFinder.find(tempDir, any()));
     }
 
     @Test
     public void test_find_two_files_in_basedir() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
         File tempFile1 = createTempFile(tempDir);
         File tempFile2 = createTempFile(tempDir);
         assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
@@ -41,10 +54,10 @@ public class FileFinderImplTest {
 
     @Test
     public void test_find_two_files_in_tree() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createTempDir(tempDir);
+        File subDir = createTempSubDir();
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
@@ -52,10 +65,10 @@ public class FileFinderImplTest {
 
     @Test
     public void test_find_one_file_until_depth() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createTempDir(tempDir);
+        File subDir = createTempSubDir();
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
@@ -64,7 +77,7 @@ public class FileFinderImplTest {
 
     @Test
     public void test_find_one_file_matching_extension() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
 
         final String suffix = ".tmp";
         File tempFile1 = createTempFile(tempDir, suffix);
@@ -76,10 +89,10 @@ public class FileFinderImplTest {
 
     @Test
     public void test_find_one_file_until_accessible() throws IOException {
-        File tempDir = createTempDir();
+        File tempDir = getTempDir();
         File tempFile1 = createTempFile(tempDir);
 
-        File subDir = createTempDir(tempDir);
+        File subDir = createTempSubDir();
         File tempFile2 = createTempFile(subDir);
 
         assertEquals(sorted(tempFile1, tempFile2), fileFinder.find(tempDir, any()));
