@@ -17,8 +17,8 @@ public class FileFilters {
     }
 
     public static FileFilter byMaxDepth(File basedir, int maxDepth) {
-        String prefix = basedir.toString();
-        return file -> countSeparators(file.toString().replace(prefix, "")) <= maxDepth;
+        int prefixLength = basedir.toString().length();
+        return file -> countSeparators(file.toString().substring(prefixLength)) <= maxDepth;
     }
 
     protected static int countSeparators(String path) {
